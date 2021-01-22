@@ -38,5 +38,5 @@ io.on('connection',socket=>{
 
 
 server.listen(process.env.PORT||3000,()=>{
-	log("listaning")
+	log("listaning "+process.env.PORT+"  "+server.get('port'))
 });
