@@ -7,7 +7,7 @@ const chatDisplay=document.querySelector('.message-display')
 
 
 
-const socket=io('ws://godispatcher.herokuapp.com');
+const socket=io('wss://godispatcher.herokuapp.com');
 
 socket.on('connect',()=>{
 	socket.on('message-r',(data,name)=>{
