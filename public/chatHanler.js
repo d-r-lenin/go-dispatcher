@@ -12,7 +12,7 @@ const chatHeader = document.querySelector('.chat-header')
 
 chatHeader.innerHTML = `<h1>${roomname}</h1>`;
 
-const socket=io('ws://localhost:3000');
+const socket=io('wss://godispatcher.herokuapp.com');
 
 socket.on('connect',()=>{
 	socket.emit('join-room',{ name , roomname })
