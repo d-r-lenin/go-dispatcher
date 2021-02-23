@@ -1,31 +1,27 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>sender.org</title>
-	<link href="style.css" rel="stylesheet">
+	<link href="indexStyle.css" rel="stylesheet">
 	<script src="axios/axios.min.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 </head>
-<div class="container">
-	<div class="chat">
-		<div class="chat-header"><h1>Public Room</h1></div>
-		<div class="message-display">
-			<div class="recived-message message">
-				<span class="box"></span>
-				<span>Hi butt butt</span>
-			</div>
-			<div class="sent-message message">
-				<div class="box"></div>
-				<span>Mm bye</span>
-			</div>
-		</div>
-		<div class="message-form">
-			<label for="message"></label><input name="message" class="message-input"  />
-			<button class="send-button">send</button>
-		</div>
+<body>
+	<div class="header">
+		<h1>rooms list</h1>
 	</div>
-</div>
-		<script src="script.js"></script>
-</body>
-</html>
+	<div class="container-index">
+      <ol class="rooms-list">
+			<% for( i in room){ %>
+				<li class="room-name"><%= room[i] %></li>
+			<%}%>
+      </ol>
+      <form action="/room" class="form-index"><p>
+         <input type="text" class="room-input" name="roomname" placeholder="ROOM NAME" required autocomplete="off">
+			<input type="text" class="name" name="name" placeholder="NAME" required autocomplete="off"></p>
+         <button class="btn-index">join</button>
+      </form>
+	</div>
+		<script src="mainScript.js"></script>
+</body></html>

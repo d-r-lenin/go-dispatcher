@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>sender.org</title>
+	<link href="indexStyle.css" rel="stylesheet">
+	<script src="axios/axios.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="helperForChatRoom.js"></script>
+</head>
+<body class="container">
+	<div class="header chat-header">
+		<h1>rooms list</h1>
+	</div>
+	<div class="chat">
+		<div class="container-index">
+			<ol class="rooms-list message-display">
+			</ol>
+			<div  class="form-index message-form"><p>
+				<label for="message"></label>
+				<input type="message" class="room-input message-input" name="message"   autocomplete="off">
+				<button class="btn-index send-button">send</button></p>
+			</div>
+		</div>
+	</div>
+	<script src="chatHanler.js"></script>
+</body></html>

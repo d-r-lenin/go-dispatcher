@@ -1,5 +1,3 @@
-const log=console.log;
-
 const express=require('express')
 const app=express();
 const server=require('http').createServer(app)
@@ -10,33 +8,49 @@ app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 app.set('view engine','ejs')
 
+const roomList = [];
+const roomInfo = {};
+
 app.get('/',(req,res)=>{
-	res.render('index.ejs');
+	const defaultName = 'default';
+	res.render('index.ejs',{ room : roomList });
+})
+
+app.get('/room' ,(req,res)=>{
+	res.render('room.ejs')
 })
 
 
-const users={};
-
 io.on('connection',socket=>{
-
-	log('connection opened '+socket.id)
-
-	socket.on('im-connected',(name,i)=>{
-		users[socket.id]=name;
-		socket.broadcast.emit('user-connected',users[socket.id]);
+	socket.on('join-room',(data) => {
+		socket.join(data.roomname)
+		socket.room = data.roomname
+		socket.name = data.name;
+		if(roomList.indexOf(socket.room) === -1){
+			roomList.push(socket.room);
+			roomInfo[socket.room] = { names : [socket.name] }
+		}else{
+			roomInfo[socket.room].names.push(socket.name)
+		}
+		socket.broadcast.to(socket.room).emit('user-connected',socket.name);
 	})
 
 	socket.on('disconnect',()=>{
-		socket.broadcast.emit('user-disconnected',users[socket.id])
-		log('connection closed')
+		socket.leave(socket.room)
+		roomInfo[socket.room].names.pop(socket.name)
+		if(roomInfo[socket.room].names.length === 0){
+			roomList.pop(socket.room)
+			delete roomInfo[socket.room]
+		}
+		socket.broadcast.to(socket.room).emit('user-disconnected',socket.name)
 	})
 	socket.on('message',(message)=>{
-		socket.broadcast.emit('message-r',message,users[socket.id]);
+		socket.broadcast.to(socket.room).emit('message-r',message,socket.name);
 	})
 
 })
 
 
-server.listen(process.env.PORT||3000,()=>{
-	log("listaning")
+server.listen(3000,()=>{
+	console.log("listaning localhost:3000")
 });
