@@ -11,7 +11,6 @@ app.set('view engine','ejs')
 const roomList = [];
 const roomInfo = {};
 
-//hello
 app.get('/',(req,res)=>{
 	const defaultName = 'default';
 	res.render('index.ejs',{ room : roomList });
