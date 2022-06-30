@@ -13,14 +13,17 @@
 	</div>
 	<div class="container-index">
       <ol class="rooms-list">
-			<% for( i in room){ %>
-				<li class="room-name"><%= room[i] %></li>
+			<% let keyList = Object.keys(room)%>
+			<% for( key of keyList){ %>
+				<form action="/prejoin">
+					<li class="room-name"  roomid = '<%= key %>'><%= room[key].roomname %></li>
+					<input type="text" name="roomid" value="<%= key %>" style="display: none">
+					<button>join <%= room[key].roomname %></button>
+				</form>
 			<%}%>
       </ol>
-      <form action="/room" class="form-index"><p>
-         <input type="text" class="room-input" name="roomname" placeholder="ROOM NAME" required autocomplete="off">
-			<input type="text" class="name" name="name" placeholder="NAME" required autocomplete="off"></p>
-         <button class="btn-index">join</button>
+      <form action="/create" class="form-index">
+         <button class="btn-index">Create</button>
       </form>
 	</div>
 		<script src="mainScript.js"></script>

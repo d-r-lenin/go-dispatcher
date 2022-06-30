@@ -1,51 +1,80 @@
-const express=require('express')
-const app=express();
-const server=require('http').createServer(app)
-const io=require('socket.io')(server)
+const crypto = require('crypto');
+const express = require('express')
+const app = express();
+const server = require('http').createServer(app)
+const io = require('socket.io')(server)
 
 app.use(express.static('public'))
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 app.set('view engine','ejs')
 //hi
-const roomList = [];
 const roomInfo = {};
+
+// roomInfo ={
+// 	id['string']:{
+// 		room: 'string',
+// 		names:['string'],
+// 		topics:['string']
+// 	}
+// }
 
 app.get('/',(req,res)=>{
 	const defaultName = 'default';
-	res.render('index.ejs',{ room : roomList });
+	res.render('index.ejs',{ room : roomInfo });
 })
 
 app.get('/room' ,(req,res)=>{
 	res.render('room.ejs')
 })
 
+app.get('/prejoin',(req,res)=>{
+	res.render('prejoin.ejs', { roominfo: roomInfo[req.query.roomid], roomid: req.query.roomid });
+})
+
+app.get('/create',(req,res)=>{
+	res.render('create.ejs');
+})
 
 io.on('connection',socket=>{
 	socket.on('join-room',(data) => {
-		socket.join(data.roomname)
-		socket.room = data.roomname
-		socket.name = data.name;
-		if(roomList.indexOf(socket.room) === -1){
-			roomList.push(socket.room);
-			roomInfo[socket.room] = { names : [socket.name] }
-		}else{
-			roomInfo[socket.room].names.push(socket.name)
+		console.log(data);
+		socket.roomid = data.roomid;
+		if(!socket.roomid){
+			socket.roomid = "ID" + crypto.randomBytes(8).toString('hex');
 		}
-		socket.broadcast.to(socket.room).emit('user-connected',socket.name);
+		if (!socket.roomname) socket.roomname = 'unnamed' + crypto.randomBytes(2).toString('hex');
+		socket.join(socket.roomid);
+		socket.roomname = data.roomname;
+		socket.name = data.name;
+		if (!roomInfo[socket.roomid]) {
+			roomInfo[socket.roomid] = {
+				names : [socket.name],
+				roomname: socket.roomname
+			}
+		}else{
+			roomInfo[socket.roomid].names.push(socket.name)
+		}
+		console.log('join:', roomInfo);
+		socket.broadcast.to(socket.roomid).emit('user-connected',socket.name);
+
 	})
 
 	socket.on('disconnect',()=>{
-		socket.leave(socket.room)
-		roomInfo[socket.room].names.pop(socket.name)
-		if(roomInfo[socket.room].names.length === 0){
-			roomList.pop(socket.room)
-			delete roomInfo[socket.room]
+		socket.leave(socket.roomid)
+		if (roomInfo[socket.roomid].names.includes(socket.name)){
+ 			roomInfo[socket.roomid].names.splice(roomInfo[socket.roomid].names.indexOf(socket.name),1); //removing the name from array
 		}
-		socket.broadcast.to(socket.room).emit('user-disconnected',socket.name)
+		if (roomInfo[socket.roomid].names.length === 0) {
+			delete roomInfo[socket.roomid];
+		}
+		console.log('disconnect:', roomInfo[socket.roomid]);
+		socket.broadcast.to(socket.roomid).emit('user-disconnected',socket.name)
+
 	})
+
 	socket.on('message',(message)=>{
-		socket.broadcast.to(socket.room).emit('message-r',message,socket.name);
+		socket.broadcast.to(socket.roomid).emit('message-r',message,socket.name);
 	})
 
 })

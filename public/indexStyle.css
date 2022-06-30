@@ -5,8 +5,14 @@
   font-family: sans-serif;
 }
 
+.container{
+   width: 100vw;
+   max-width: 500px;
+   margin: auto;
+}
+
 .container-index{
-  width: 100vw;
+  width: 100%;
   margin:0 auto;
   margin-top: 11vw;
   min-height:50vh;
@@ -14,7 +20,8 @@
 
 .header{
    height: 11vw;
-   width: 100vw;
+   width: 100%;
+   max-width: 500px;
    background-color: #0a90ff;
    color: #b0ffff;
    display: flex;
@@ -86,18 +93,15 @@
    bottom: 0;
    display: flex;
    flex-direction: column;
-   width: 100vw;
+   width: 100%;
+   max-width: 500px;
 }
 .form-index input{
    padding-left: 1rem;
    width: 100%;
 }
 
-.form-index p{
-   width: 100%;
-   box-shadow: 5px 0 .3em black;
-   display: flex;
-}
+
 .form-index button{
    background-color: #0a90ff;
    min-height:2rem;

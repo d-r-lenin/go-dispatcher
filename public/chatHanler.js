@@ -1,4 +1,4 @@
-const { name , roomname} = UrlDecode()
+const { name , roomid ,roomname} = UrlDecode()
 
 if(!name || !roomname){
 	location.replace('/')
@@ -12,10 +12,13 @@ const chatHeader = document.querySelector('.chat-header')
 
 chatHeader.innerHTML = `<h1>${roomname}</h1>`;
 
-const socket=io('wss://godispatcher.herokuapp.com');
+// const socket = io('wss://godispatcher.herokuapp.com');
+const socket = io('ws://localhost:3000');
+
+
 
 socket.on('connect',()=>{
-	socket.emit('join-room',{ name , roomname })
+	socket.emit('join-room',{ name , roomid, roomname})
 
 	socket.on('message-r',(data,name)=>{
 		recivedMessage(data,name);

@@ -8,7 +8,8 @@
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="helperForChatRoom.js"></script>
 </head>
-<body class="container">
+<body >
+	<div class="container">
 	<div class="header chat-header">
 		<h1>rooms list</h1>
 	</div>
@@ -16,12 +17,13 @@
 		<div class="container-index">
 			<ol class="rooms-list message-display">
 			</ol>
-			<div  class="form-index message-form"><p>
+			<div  class="form-index message-form">
 				<label for="message"></label>
 				<input type="message" class="room-input message-input" name="message"   autocomplete="off">
-				<button class="btn-index send-button">send</button></p>
+				<button class="btn-index send-button">send</button>
 			</div>
 		</div>
+	</div>
 	</div>
 	<script src="chatHanler.js"></script>
 </body></html>
