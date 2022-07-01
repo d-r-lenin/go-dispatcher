@@ -33,28 +33,51 @@ app.get('/prejoin',(req,res)=>{
 })
 
 app.get('/create',(req,res)=>{
-	res.render('create.ejs');
+	res.render('create.ejs',{ crypto });
+})
+
+app.get('/roominfo',(req,res)=>{
+	console.log(req.query);
+	let roomid = req.query.roomid
+	if(!roomid){
+		res.send('no-record');
+	}
+	console.log(roomInfo[roomid]);
+	console.log(JSON.stringify(roomInfo[roomid]));
+	res.send(JSON.stringify(roomInfo[roomid]));
+})
+
+app.post('/create', (req, res) => {
+	console.log(req.body);
+	if(!req.body.roomid){
+		req.body.roomid = "ID" + crypto.randomBytes(8).toString('hex');
+	}
+	roomInfo[req.body.roomid] = {
+		names: [],
+		roomname: req.body.roomname,
+		topics: req.body.topics
+	}
+	res.redirect(`/room?name=${req.body.name}&roomid=${req.body.roomid}&roomname=${req.body.roomname}`);
 })
 
 io.on('connection',socket=>{
 	socket.on('join-room',(data) => {
-		console.log(data);
 		socket.roomid = data.roomid;
-		if(!socket.roomid){
-			socket.roomid = "ID" + crypto.randomBytes(8).toString('hex');
-		}
-		if (!socket.roomname) socket.roomname = 'unnamed' + crypto.randomBytes(2).toString('hex');
-		socket.join(socket.roomid);
 		socket.roomname = data.roomname;
-		socket.name = data.name;
 		if (!roomInfo[socket.roomid]) {
+			// socket.emit('room-not-available', true);
 			roomInfo[socket.roomid] = {
-				names : [socket.name],
-				roomname: socket.roomname
+				names: [],
+				roomname: socket.roomname,
+				topics: "default:random"
 			}
-		}else{
-			roomInfo[socket.roomid].names.push(socket.name)
 		}
+		// if (!socket.roomname) socket.roomname = 'unnamed' + crypto.randomBytes(2).toString('hex');
+		socket.name = data.name;
+		socket.join(socket.roomid);
+
+		roomInfo[socket.roomid].names.push(socket.name);
+
 		console.log('join:', roomInfo);
 		socket.broadcast.to(socket.roomid).emit('user-connected',socket.name);
 
@@ -62,6 +85,7 @@ io.on('connection',socket=>{
 
 	socket.on('disconnect',()=>{
 		socket.leave(socket.roomid)
+		if (!roomInfo[socket.roomid])return;
 		if (roomInfo[socket.roomid].names.includes(socket.name)){
  			roomInfo[socket.roomid].names.splice(roomInfo[socket.roomid].names.indexOf(socket.name),1); //removing the name from array
 		}

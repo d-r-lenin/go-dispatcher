@@ -7,9 +7,11 @@
     <title>Create room</title>
 </head>
 <body>
-    <form action="/room">
+    <form action="/create" method="post">
         <input type="text" required name="name" placeholder="Name">
         <input type="text" required name="roomname" placeholder="Roomname" >
+        <input type="textarea" name="topics" placeholder="Topics separeted by comma" required>
+        <input type="text" style="display: none;" name="roomid" value="<%= "ID" + crypto.randomBytes(8).toString('hex') %>">
         <button>create</button>
     </form>
 </body>
