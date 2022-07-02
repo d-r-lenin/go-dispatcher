@@ -23,8 +23,8 @@ const fun = async ()=>{
 }
 fun();
 
-// const socket = io('wss://godispatcher.herokuapp.com');
-const socket = io('ws://localhost:3000');
+const socket = io('wss://godispatcher.herokuapp.com');
+// const socket = io('ws://localhost:3000');
 
 
 socket.on('connect', async () => {

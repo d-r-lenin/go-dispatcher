@@ -24,8 +24,8 @@ function copylink(){
 	alert('Link copied...');
 }
 
-// const socket = io('wss://godispatcher.herokuapp.com');
-const socket = io('ws://localhost:3000');
+const socket = io('wss://godispatcher.herokuapp.com');
+// const socket = io('ws://localhost:3000');
 
 
 
