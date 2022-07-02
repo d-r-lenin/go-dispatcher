@@ -29,7 +29,6 @@ socket.on('connect',async ()=>{
 		const data = await axios.get(`/roominfo?roomid=${roomid}`);
 		console.log(data);
 		chatHeader.innerHTML = `<h1>${data.data.roomname}</h1>`
-		link.outerHTML = `<a target="blank" href = "http://${location.host}/prejoin?&roomid=${roomid}&roomname=${data.data.roomname}" >click here</a>`
 	},700);
 	socket.on('room-not-available',(data)=>{
 		location.replace('/');

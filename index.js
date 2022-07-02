@@ -25,7 +25,7 @@ app.get('/',async(req,res)=>{
 })
 
 app.get('/room' ,(req,res)=>{
-	res.render('room.ejs')
+	res.render('room-new.ejs')
 })
 
 app.get('/prejoin',(req,res)=>{

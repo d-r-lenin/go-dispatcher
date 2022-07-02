@@ -1,23 +1,36 @@
+{/* <div class="chat-card-wrap">
+	<div class="chat-card-name">Mike :</div>
+	<div class="chat-card-msg">Hello Mate</div>
+</div> */}
+
 function recivedMessage(message,name){
 	const msgEl = document.createElement('div')
-	msgEl.classList.add('recived-message')
-	msgEl.classList.add('message')
-	msgEl.innerHTML=`<span class="box"></span>`
-	const span = document.createElement('span');
-	span.innerText =`${name} : ${message}`
-	msgEl.appendChild(span);
+	msgEl.classList.add('chat-card-wrap');
+	let div = document.createElement('div');
+	div.classList.add('chat-card-name');
+	div.innerText = name + " :"
+	msgEl.appendChild(div);
+	div = document.createElement('div');
+	div.classList.add('chat-card-msg');
+	div.innerText = message +'';
+	msgEl.appendChild(div);
 	chatDisplay.appendChild(msgEl)
 	chatDisplay.scrollTop=chatDisplay.scrollHeight;
 }
 function sentMessage(message){
 	const msgEl = document.createElement('div')
-	msgEl.classList.add('sent-message')
-	msgEl.classList.add('message')
-	msgEl.innerHTML=`<span class="box"></span>`
-	const span = document.createElement('span');
-	span.innerText = `${message}`
-	msgEl.appendChild(span);
+	msgEl.classList.add('chat-card-wrap');
+	let div = document.createElement('div');
+	div.classList.add('chat-card-name');
+	div.innerText = "(You) :"
+	msgEl.appendChild(div);
+	div = document.createElement('div');
+	div.classList.add('chat-card-msg');
+	div.innerText = message ;
+	msgEl.appendChild(div);
+	msgEl.style.backgroundColor = 'rgb(190, 190, 180)'
 	chatDisplay.appendChild(msgEl)
+
 	chatDisplay.scrollTop=chatDisplay.scrollHeight;
 }
 function UrlDecode(url){
