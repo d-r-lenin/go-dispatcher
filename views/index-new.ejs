@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>sender.org</title>
+    <link rel="stylesheet" href="style.css">
+	<!-- <link href="indexStyle.css" rel="stylesheet"> -->
+	<script src="axios/axios.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header-wraper">
+            <div class="header">
+                <h1>Dispatcher</h1>
+            </div>
+            <div class="banner">
+                <div class="kural-wrapper">
+                    <div class="kural">
+                        <q kural>Loading...</q>
+                    </div>
+                    <div class="kural-number">
+                        -Thirukkural:<span  kural-num>Loading...</span>
+                    </div>
+                    <div class="scroll-down-msg">Scroll Down</div>
+                    <div class="kural-source">
+                        <a target="_blank" href="https://ped-kural.herokuapp.com/">ThiruKkural from (Ped's thirukkural)</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="list-header">
+            <h1>List of available rooms</h1>
+        </div>
+        <hr style="width:50%; margin: auto; margin-top: 1.5rem;", size="1", color=black>  
+        <div class="room-list-wrapper" room-list-parant>
+            <div class="room-card create-room-card" create-btn>Create</div>
+            <% let keyList = Object.keys(room)%>
+			<% for( key of keyList){ %>
+                <div class="room-card" room-item roomid =<%= key %> >
+                    <h1><%= room[key].roomname %></h1>
+                    <p class="discription"><%= room[key].topics %></p>
+                </div>
+            <%}%>
+        </div>
+        <div class="footer">
+        </div>
+        <script src="mainScript.js"></script>
+    </div>
+</body>
+</html>

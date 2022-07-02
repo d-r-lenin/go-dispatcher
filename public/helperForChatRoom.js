@@ -2,8 +2,10 @@ function recivedMessage(message,name){
 	const msgEl = document.createElement('div')
 	msgEl.classList.add('recived-message')
 	msgEl.classList.add('message')
-	msgEl.innerHTML=`<span class="box"></span>
-						  <span>${name} : ${message}</span>`
+	msgEl.innerHTML=`<span class="box"></span>`
+	const span = document.createElement('span');
+	span.innerText =`${name} : ${message}`
+	msgEl.appendChild(span);
 	chatDisplay.appendChild(msgEl)
 	chatDisplay.scrollTop=chatDisplay.scrollHeight;
 }
@@ -11,8 +13,10 @@ function sentMessage(message){
 	const msgEl = document.createElement('div')
 	msgEl.classList.add('sent-message')
 	msgEl.classList.add('message')
-	msgEl.innerHTML=`<span class="box"></span>
-						  <span>${message}</span>`
+	msgEl.innerHTML=`<span class="box"></span>`
+	const span = document.createElement('span');
+	span.innerText = `${message}`
+	msgEl.appendChild(span);
 	chatDisplay.appendChild(msgEl)
 	chatDisplay.scrollTop=chatDisplay.scrollHeight;
 }

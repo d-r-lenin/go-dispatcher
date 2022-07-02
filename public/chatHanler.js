@@ -1,10 +1,14 @@
 
-const { name , roomid, roomname } = UrlDecode()
+let { name, roomid, roomname, topics } = UrlDecode()
+
+roomid = decodeURI(roomid),
+name = decodeURI(name),
+topics = decodeURI(topics)
 
 if(!name || !roomid || !roomname){
 	location.replace('/')
 }
-
+// history.replaceState('hello', 'faced',`/room?name=${name}&roomid=${roomid}&roomname=${roomname}`);
 
 const msgForm = document.querySelector('.message-form')
 const sendBtn = document.querySelector('.send-button')
@@ -20,7 +24,7 @@ const socket = io('ws://localhost:3000');
 
 
 socket.on('connect',async ()=>{
-	socket.emit('join-room',{ name , roomid, roomname})
+	socket.emit('join-room',{ name , roomid, roomname, topics})
 	setTimeout(async()=>{
 		const data = await axios.get(`/roominfo?roomid=${roomid}`);
 		console.log(data);
