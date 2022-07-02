@@ -14,9 +14,15 @@ const msgForm = document.querySelector('.message-form')
 const sendBtn = document.querySelector('.send-button')
 const msgInput = document.querySelector('.message-input')
 const chatDisplay = document.querySelector('.message-display')
+const disc = document.querySelector('.discription');
 const chatHeader = document.querySelector('.chat-header')
 const link = document.querySelector('#link');
 
+function copylink(){
+	let l = `${location.host}/prejoin?roomid=${roomid}&roomname=${roomname}`;
+	navigator.clipboard.writeText(l);
+	alert('Link copied...');
+}
 
 // const socket = io('wss://godispatcher.herokuapp.com');
 const socket = io('ws://localhost:3000');
@@ -28,7 +34,8 @@ socket.on('connect',async ()=>{
 	setTimeout(async()=>{
 		const data = await axios.get(`/roominfo?roomid=${roomid}`);
 		console.log(data);
-		chatHeader.innerHTML = `<h1>${data.data.roomname}</h1>`
+		chatHeader.innerHTML = `<h1>${data.data.roomname}</h1>`;
+		disc.innerText = data.data.topics;
 	},700);
 	socket.on('room-not-available',(data)=>{
 		location.replace('/');
