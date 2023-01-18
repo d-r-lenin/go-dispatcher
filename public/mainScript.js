@@ -23,8 +23,9 @@ const fun = async ()=>{
 }
 fun();
 
-const socket = io('wss://godispatcher.herokuapp.com');
-// const socket = io('ws://localhost:3000');
+let host = window.location.host;
+let socketProtocal = window.location.host.includes("localhost") ? "ws://": "wss://";
+const socket = io(`${socketProtocal}${window.location.host}`);
 
 
 socket.on('connect', async () => {
